@@ -2,22 +2,22 @@ from pymongo import MongoClient
 from datetime import datetime
 
 # MongoDB setup
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb+srv://praveenkumar:8LdsJNtludfEE8iP@cluster0.aijthkz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client["pdf_ml_db"]
 watchlist_col = db["watchlist"]
 
 # Sample data (10 users with name + country)
 default_users = [
-    {"name": "Alice", "country": "USA"},
-    {"name": "Bob", "country": "Canada"},
-    {"name": "Charlie", "country": "UK"},
-    {"name": "David", "country": "Australia"},
-    {"name": "Eva", "country": "Germany"},
-    {"name": "Frank", "country": "France"},
-    {"name": "Grace", "country": "Italy"},
-    {"name": "Hannah", "country": "India"},
-    {"name": "Ivan", "country": "Russia"},
-    {"name": "Jack", "country": "Japan"}
+    {"name": "Alice", "country": "US"},
+    {"name": "Bob", "country": "CA"},
+    {"name": "Charlie", "country": "GB"},
+    {"name": "David", "country": "AU"},
+    {"name": "Eva", "country": "DE"},
+    {"name": "Frank", "country": "FR"},
+    {"name": "Grace", "country": "IT"},
+    {"name": "Hannah", "country": "IN"},
+    {"name": "Ivan", "country": "RU"},
+    {"name": "Jack", "country": "JP"}
 ]
 
 # Add timestamp
