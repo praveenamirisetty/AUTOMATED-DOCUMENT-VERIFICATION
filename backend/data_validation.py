@@ -12,6 +12,13 @@ penalty = 0
 status = ""
 message = ""
 
+clarity_score = {
+    "document_health_score": 0.53,
+    "document_clarity_score": 0.52,
+    "document_blur_score": 0.46,
+    "document_contrast_score": 0.56,
+}
+
 sample_data = {
     "doc1": {
         "name": "Arjun Mehta",
@@ -19,6 +26,7 @@ sample_data = {
         "gender": "M",
         "city": "Mumbai",
         "country": "IR",
+
     },
     "doc2": {
         "name": "Meht Arun",
@@ -44,7 +52,7 @@ def sentence_cosine(name1, name2):
   return cos_sim.item()
 
 def cosine_similarity_names(name1, name2):
-    vectorizer = CountVectorizer(analyzer="char", ngram_range=(2,3)).fit_transform(names)
+    vectorizer = CountVectorizer(analyzer="char", ngram_range=(2,3)).fit_transform(name1, name2)
     cos_sim = cosine_similarity(vectorizer[0], vectorizer[1])
     return cos_sim[0][0]
 
@@ -71,7 +79,7 @@ def country_check(country):
       penalty += 20
       message += "Country sanctioned so penalty added\n"
 
-def validate_data(data):
+def validate_data(data, clarity_score):
 
     try:
         response = requests.get("http://localhost:5000/api/watchlist")
@@ -83,6 +91,12 @@ def validate_data(data):
 
     data = json.loads(data)
     docs = []
+
+    clarity = json.loads(clarity_score)
+    if(clarity['document_blur_score'] > 0.6 or clarity['document_contrast_score'] < 0.3):
+        global penalty, message
+        penalty += 15
+        message += "Poor clarity so penalty added\n"
 
     for doc in data:
       if "expiry_date" in data[doc]:
@@ -110,6 +124,16 @@ def validate_data(data):
     else:
       print("hard fail")
       print(message)
+
+    if penalty >= 71 or hard_fail:
+      global status
+      status = "rejected"
+    elif penalty >= 31:
+        status = "flagged"
+    else:
+        status = "accepted"
+    
+    return status, penalty, message
 
 def cross_validate_fields(docs, keys):
     report = {}
