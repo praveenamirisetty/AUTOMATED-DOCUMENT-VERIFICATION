@@ -106,7 +106,6 @@ def get_users_with_documents():
         documents_list = [serialize_doc(doc) for doc in documents]
         user["documents"] = documents_list
         result.append(user)
-
     return jsonify({"users": result})
 
 if __name__ == "__main__":
