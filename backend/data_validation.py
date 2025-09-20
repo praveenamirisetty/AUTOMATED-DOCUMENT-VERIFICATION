@@ -1,4 +1,5 @@
 import json
+import requests
 from datetime import datetime, date
 from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -71,6 +72,14 @@ def country_check(country):
       message += "Country sanctioned so penalty added\n"
 
 def validate_data(data):
+
+    try:
+        response = requests.get("http://localhost:5000/api/watchlist")
+        response.raise_for_status()  # Raise error if status != 200
+        watchlist_data = response.json()       # This is now a Python list/dict
+    except Exception as e:
+        print("Failed to fetch watchlist:", e)
+        return
 
     data = json.loads(data)
     docs = []
