@@ -11,7 +11,7 @@ app = Flask(__name__)
 CORS(app)
 
 # MongoDB setup
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb+srv://praveenkumar:8LdsJNtludfEE8iP@cluster0.sm7otw2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client["pdf_ml_db"]
 documents_col = db["documents"]
 users_col = db["users"]
