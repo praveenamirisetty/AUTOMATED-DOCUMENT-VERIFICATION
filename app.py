@@ -15,6 +15,7 @@ client = MongoClient("mongodb://localhost:27017/")
 db = client["pdf_ml_db"]
 documents_col = db["documents"]
 users_col = db["users"]
+watchlist_col = db["watchlist"]
 
 @app.route("/api/upload_pdf", methods=["POST"])
 def upload_pdf():
@@ -108,6 +109,11 @@ def get_users_with_documents():
         result.append(user)
 
     return jsonify({"users": result})
+
+@app.route("/api/watchlist", methods=["GET"])
+def get_watchlist():
+    users = list(watchlist_col.find({}, {"_id": 0}))
+    return jsonify(users)
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
